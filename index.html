@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TELEVIDEO - Full Screen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-white: #ffffff;
+            --text-yellow: #ffff00;
+            --text-cyan: #00ffff;
+            --text-red: #ff0000;
+            --text-green: #00ff00;
+            --text-blue: #0000ff;
+            --font-main: 'VT323', monospace;
+        }
+
+        /* --- MODIFICATIONS FOR FULL SCREEN --- */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrollbars */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            font-family: var(--font-main);
+            font-size: 1.5vw; /* Responsive font size */
+        }
+        
+        p {
+            font-size: 1.4vw;
+        }
+
+        .teletext-container {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            position: relative;
+            box-sizing: border-box; /* Ensures padding is included in width/height */
+            overflow: hidden;
+        }
+        /* --- END MODIFICATIONS --- */
+
+       .sub{
+            color: red;
+        }
+
+        .teletext-container::after {
+            content: ' ';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.05) 50%, transparent 50%);
+            background-size: 100% 4px;
+            opacity: 0.2;
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.3; }
+            100% { opacity: 0.2; }
+        }
+
+        .header {
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-green);
+            flex-shrink: 0;
+        }
+        
+        .header-left span {
+            margin-right: 10px;
+        }
+
+        .header-center {
+            color: var(--text-white);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-right .page-input {
+            background-color: var(--text-yellow);
+            color: var(--bg-color);
+            width: 50px;
+            text-align: center;
+            border: none;
+            font-family: var(--font-main);
+            font-size: inherit; /* Inherit body's responsive font size */
+        }
+
+        .header-right .go-btn {
+            background-color: #555;
+            color: var(--text-white);
+            padding: 0 10px;
+            border: 1px solid #888;
+            cursor: pointer;
+        }
+
+        .main-title-container {
+            background: linear-gradient(
+                to bottom,
+                var(--text-blue) 0%,
+                var(--text-blue) 25%,
+                var(--bg-color) 25%,
+                var(--bg-color) 75%,
+                var(--text-blue) 75%,
+                var(--text-blue) 100%
+            );
+            padding: 5px 0;
+            margin: 10px 0;
+            flex-shrink: 0;
+        }
+
+        .title {
+            font-size: clamp(40px, 8vw, 100px); /* Responsive title size */
+            color: var(--text-yellow);
+            letter-spacing: 2px;
+            line-height: 1;
+            text-shadow: 5px 5px var(--text-blue);
+            text-align: center;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 15px 5px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .index-grid {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .col-left, .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+
+        /* Hide scrollbar for webkit browsers */
+        .col-left::-webkit-scrollbar, .col-right::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for Firefox */
+        .col-left, .col-right {
+            scrollbar-width: none;
+        }
+
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .nav-item:hover .nav-text, .nav-item:hover .nav-text-red {
+            text-decoration: underline;
+        }
+        
+        .nav-item.active .nav-text {
+            background-color: var(--bg-color);
+            color: var(--text-yellow);
+            border-top: 4px solid #ffffff;
+            border-bottom: 4px solid #ffffff;
+            border-right: 10px solid white;
+            border-right-width: 0px;
+        }
+        
+        .nav-item.active .nav-text::before {
+            content: '';
+            position: absolute;
+            left: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 30%;
+            width: 13px;
+            border-right: 10px solid black;
+            background-color: var(--text-white);
+        }
+
+        .nav-number {
+            color: var(--text-white);
+            margin-right: 10px;
+            width: 40px;
+        }
+        
+        .nav-text {
+            padding: 5px 8px;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        .nav-text.yellow { background-color: var(--text-yellow); color: var(--bg-color); }
+        .nav-text.cyan { background-color: var(--text-cyan); color: var(--bg-color); }
+        .nav-text.green { background-color: var(--text-green); color: var(--bg-color); }
+        .nav-text.blue { background-color: var(--text-blue); color: var(--text-white); }
+        .nav-text-red { color: var(--text-red); }
+        
+        #content-panel {
+            background-color: var(--text-white);
+            color: var(--bg-color);
+            height: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        #content-panel .page-title {
+            color: var(--bg-color);
+            font-size: 1.6vw;
+            text-decoration: underline;
+            margin-bottom: 15px;
+        }
+        
+        #content-panel .page-content p {
+            color: var(--bg-color);
+            margin-bottom: 10px;
+        }
+        
+        #content-panel .page-content b {
+            color: var(--text-blue);
+        }
+
+        .footer {
+            padding: 10px 15px;
+            color: var(--text-yellow);
+            text-align: center;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="teletext-container">
+        <header class="header">
+            <div class="header-left">
+                <span id="page-number-header">PAG 100</span>
+            </div>
+            <div class="header-center">www.miosito.it</div>
+            <div class="header-right">
+                <span id="clock"></span>
+                <input type="text" class="page-input" id="page-input-field" maxlength="3" value="100">
+                <span class="go-btn">VAI</span>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="main-title-container">
+                <h1 class="title">BENVENUTO</h1>
+            </div>
+            <div class="index-grid">
+                <div class="col-left">
+                    <div class="nav-item" onclick="updateContentPanel('101', this)"><span class="nav-number">101</span><span class="nav-text yellow">HOME</span></div>
+                    <div class="nav-item" onclick="updateContentPanel('102', this)"><span class="nav-number">102</span><span class="nav-text yellow">CHI SIAMO</span></div>
+                    <div class="nav-item" onclick="updateContentPanel('103', this)"><span class="nav-number">103</span><span class="nav-text cyan">LE MIE ESPERIENZE</span></div>
+                    <div class="nav-item" onclick="updateContentPanel('104', this)"><span class="nav-number">104</span><span class="nav-text green">LE MIE SKILLS</span></div>
+                    <div class="nav-item" onclick="updateContentPanel('105', this)"><span class="nav-number">105</span><span class="nav-text green">LINKEDIN</span></div>
+                    <div class="nav-item" onclick="updateContentPanel('106', this)"><span class="nav-number">106</span><span class="nav-text">ALTRO</span></div>
+                </div>
+                <div class="col-right">
+                    <div id="content-panel">
+                       <!-- Il contenuto delle pagine verrà inserito qui dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <span style="cursor: pointer;" onclick="updateContentPanel('100', null)">Torna all'Indice</span>
+        </footer>
+    </div>
+
+    <!-- Page contents (hidden) -->
+    <div id="page-contents" style="display: none;">
+        <div id="content-101">
+            <h2 class="page-title">HOME</h2>
+            <div class="page-content">
+                <p><b>home</b></p>
+                <p>............</p>
+            </div>
+        </div>
+        <div id="content-102">
+            <h2 class="page-title">CHI SONO</h2>
+            <div class="page-content">
+                <p><b>nome</b></p>
+                <p>............</p>
+            </div>
+        </div>
+        <div id="content-103">
+            <h2 class="page-title">LE MIE ESPERIENZE</h2>
+            <div class="page-content">
+                <p> <span class="sub">103.01</span> • Esperienza</p>
+                <p> <span class="sub">103.02</span> • Esperienza</p>
+                <p> <span class="sub">103.03</span> • Esperienza</p>
+                <p> <span class="sub">103.04</span> • Esperienza</p>
+            </div>
+        </div>
+        <div id="content-104">
+            <h2 class="page-title">LE MIE SKILLS</h2>
+            <div class="page-content">
+                <p> <span class="sub">104.01</span> • Esperienza</p>
+                <p> <span class="sub">104.02</span> • Esperienza</p>
+                <p> <span class="sub">104.03</span> • Esperienza</p>
+                <p> <span class="sub">104.04</span> • Esperienza</p>
+                <p> <span class="sub">104.05</span> • Esperienza</p>
+            </div>
+        </div>
+        <div id="content-105">
+            <h2 class="page-title">LINKEDIN</h2>
+            <div class="page-content">
+                <p>Le mie coordinate professionali nel mondo digitale.</p>
+                <p><b>Profilo:</b> <a href="#" target="_blank" style="color: var(--text-blue);">Il mio profilo LinkedIn</a></p>
+            </div>
+        </div>
+        <div id="content-106">
+            <h2 class="page-title">ALTRO</h2>
+            <div class="page-content">
+                <p></p>
+                <p>- ...</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const pageNumberEl = document.getElementById('page-number-header');
+        const clockEl = document.getElementById('clock');
+        const pageInput = document.getElementById('page-input-field');
+        const goBtn = document.querySelector('.go-btn');
+        const contentPanel = document.getElementById('content-panel');
+
+        function updateContentPanel(pageId, element) {
+            // Manage active state for highlighting
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (element) {
+                element.classList.add('active');
+            }
+
+            // Clear the panel if returning to index (page 100)
+            if (pageId === '100') {
+                contentPanel.innerHTML = '';
+                 // Clear the title and reset page number
+                document.querySelector('.title').textContent = 'BENVENUTO';
+                pageNumberEl.textContent = `PAG 100`;
+                pageInput.value = '100';
+                return;
+            }
+            
+            // Find the content and insert it into the panel
+            const contentSource = document.getElementById(`content-${pageId}`);
+            if (contentSource) {
+                contentPanel.innerHTML = contentSource.innerHTML;
+                // Update the main title based on the page title in the content
+                const pageTitle = contentSource.querySelector('.page-title');
+                if(pageTitle) {
+                    document.querySelector('.title').textContent = pageTitle.textContent;
+                }
+            } else {
+                contentPanel.innerHTML = '<p style="color: var(--bg-color);">Contenuto non disponibile.</p>';
+                document.querySelector('.title').textContent = 'ERRORE';
+            }
+
+            // Update the page number in the header
+            pageNumberEl.textContent = `PAG ${pageId}`;
+            pageInput.value = pageId;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            clockEl.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // Handle input to change page
+        goBtn.addEventListener('click', () => {
+             const navItem = [...document.querySelectorAll('.nav-item')].find(item => item.getAttribute('onclick').includes(`'${pageInput.value}'`));
+             updateContentPanel(pageInput.value, navItem || null);
+        });
+
+        pageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                // Find the corresponding menu item to highlight it
+                const navItem = [...document.querySelectorAll('.nav-item')].find(item => item.getAttribute('onclick').includes(`'${pageInput.value}'`));
+                updateContentPanel(pageInput.value, navItem || null);
+            }
+        });
+
+        setInterval(updateClock, 1000);
+        updateClock();
+        
+        // Initial state
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialElement = document.querySelector(".nav-item[onclick*='101']");
+            updateContentPanel('101', initialElement);
+        });    
+    </script>
+</body>
+</html>
