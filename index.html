@@ -3,425 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TELEVIDEO - Full Screen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <title>Curriculum Vitae Televideo - Fixed</title>
     <style>
-        :root {
-            --bg-color: #000000;
-            --text-white: #ffffff;
-            --text-yellow: #ffff00;
-            --text-cyan: #00ffff;
-            --text-red: #ff0000;
-            --text-green: #00ff00;
-            --text-blue: #0000ff;
-            --font-main: 'VT323', monospace;
-        }
-
-        /* --- MODIFICATIONS FOR FULL SCREEN --- */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden; /* Prevents scrollbars */
-        }
-
+        /* BASE E SCHERMO INTERO */
         body {
-            background-color: var(--bg-color);
-            color: var(--text-white);
-            font-family: var(--font-main);
-            font-size: 1.5vw; /* Responsive font size */
-        }
-        
-        p {
-            font-size: 1.4vw;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            width: 100vw; 
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden; 
         }
 
-        .teletext-container {
-            width: 100vw;
-            height: 100vh;
-            background-color: var(--bg-color);
+        .screen {
+            background-color: #000;
+            width: 95vw;
+            height: 95vh;
+            max-width: 1400px;
+            max-height: 900px;
+            
+            /* LAYOUT VERTICALE FLESSIBILE (Il segreto per non far sovrapporre il footer) */
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            
+            padding: 1vw; 
             position: relative;
-            box-sizing: border-box; /* Ensures padding is included in width/height */
-            overflow: hidden;
-        }
-        /* --- END MODIFICATIONS --- */
-
-       .sub{
-            color: red;
-        }
-
-        .teletext-container::after {
-            content: ' ';
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(255, 255, 255, 0.05) 50%, transparent 50%);
-            background-size: 100% 4px;
-            opacity: 0.2;
-            pointer-events: none;
-            animation: flicker 0.15s infinite;
+            color: #fff;
+            font-weight: bold;
+            
+            /* Font size responsivo ma controllato */
+            font-size: clamp(12px, 1.4vw, 24px);
+            line-height: 1.15; 
+            
+            box-sizing: border-box;
+            border: 1px solid #555;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
 
-        @keyframes flicker {
-            0% { opacity: 0.2; }
-            50% { opacity: 0.3; }
-            100% { opacity: 0.2; }
+        /* Palette Televideo */
+        .yellow { color: #FFFF00; }
+        .green { color: #00FF00; }
+        .cyan { color: #00FFFF; }
+        .red { color: #FF0000; }
+        .blue { color: #0000FF; }
+        .white { color: #FFFFFF; }
+        .bg-blue { background-color: #0000FF; }
+        .bg-yellow { background-color: #FFFF00; color: #000; }
+        .bg-cyan { background-color: #00FFFF; color: #000; }
+
+        /* HEADER */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5em;
+            flex-shrink: 0; /* Non si rimpicciolisce */
         }
 
         .header {
-            padding: 5px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-green);
-            flex-shrink: 0;
-        }
-        
-        .header-left span {
-            margin-right: 10px;
-        }
-
-        .header-center {
-            color: var(--text-white);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-        }
-        
-        .header-right .page-input {
-            background-color: var(--text-yellow);
-            color: var(--bg-color);
-            width: 50px;
-            text-align: center;
-            border: none;
-            font-family: var(--font-main);
-            font-size: inherit; /* Inherit body's responsive font size */
-        }
-
-        .header-right .go-btn {
-            background-color: #555;
-            color: var(--text-white);
-            padding: 0 10px;
-            border: 1px solid #888;
-            cursor: pointer;
-        }
-
-        .main-title-container {
-            background: linear-gradient(
-                to bottom,
-                var(--text-blue) 0%,
-                var(--text-blue) 25%,
-                var(--bg-color) 25%,
-                var(--bg-color) 75%,
-                var(--text-blue) 75%,
-                var(--text-blue) 100%
-            );
-            padding: 5px 0;
-            margin: 10px 0;
-            flex-shrink: 0;
-        }
-
-        .title {
-            font-size: clamp(40px, 8vw, 100px); /* Responsive title size */
-            color: var(--text-yellow);
-            letter-spacing: 2px;
-            line-height: 1;
-            text-shadow: 5px 5px var(--text-blue);
-            text-align: center;
-        }
-
-        .content {
-            flex-grow: 1;
-            padding: 15px 5px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .index-grid {
             display: grid;
-            grid-template-columns: 45% 55%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .col-left, .col-right {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow-y: auto; /* Allow scrolling if content overflows */
-        }
-
-        /* Hide scrollbar for webkit browsers */
-        .col-left::-webkit-scrollbar, .col-right::-webkit-scrollbar {
-            display: none;
-        }
-        /* Hide scrollbar for Firefox */
-        .col-left, .col-right {
-            scrollbar-width: none;
-        }
-
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-        }
-        
-        .nav-item:hover .nav-text, .nav-item:hover .nav-text-red {
-            text-decoration: underline;
-        }
-        
-        .nav-item.active .nav-text {
-            background-color: var(--bg-color);
-            color: var(--text-yellow);
-            border-top: 4px solid #ffffff;
-            border-bottom: 4px solid #ffffff;
-            border-right: 10px solid white;
-            border-right-width: 0px;
-        }
-        
-        .nav-item.active .nav-text::before {
-            content: '';
-            position: absolute;
-            left: 55px;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 30%;
-            width: 13px;
-            border-right: 10px solid black;
-            background-color: var(--text-white);
-        }
-
-        .nav-number {
-            color: var(--text-white);
-            margin-right: 10px;
-            width: 40px;
-        }
-        
-        .nav-text {
-            padding: 5px 8px;
-            flex-grow: 1;
-            text-align: center;
-        }
-        
-        .nav-text.yellow { background-color: var(--text-yellow); color: var(--bg-color); }
-        .nav-text.cyan { background-color: var(--text-cyan); color: var(--bg-color); }
-        .nav-text.green { background-color: var(--text-green); color: var(--bg-color); }
-        .nav-text.blue { background-color: var(--text-blue); color: var(--text-white); }
-        .nav-text-red { color: var(--text-red); }
-        
-        #content-panel {
-            background-color: var(--text-white);
-            color: var(--bg-color);
-            height: 100%;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        #content-panel .page-title {
-            color: var(--bg-color);
-            font-size: 1.6vw;
-            text-decoration: underline;
-            margin-bottom: 15px;
-        }
-        
-        #content-panel .page-content p {
-            color: var(--bg-color);
-            margin-bottom: 10px;
-        }
-        
-        #content-panel .page-content b {
-            color: var(--text-blue);
-        }
-
-        .footer {
-            padding: 10px 15px;
-            color: var(--text-yellow);
-            text-align: center;
-            margin-top: auto;
+            grid-template-columns: 3em 1fr; /* Logo fisso, resto fluido */
+            gap: 0.5em;
+            margin-bottom: 1em;
             flex-shrink: 0;
         }
 
+        .cv-logo {
+            background-color: #0000FF;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #000;
+            font-size: 1.5em;
+            aspect-ratio: 1/1; /* Mantiene il quadrato */
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2em;
+        }
+
+        .title-logo {
+            font-size: 2em; 
+            color: #FFFF00;
+            background-color: #0000FF;
+            text-align: center;
+            letter-spacing: 0.2em;
+            text-shadow: 2px 2px #000;
+            line-height: 1.2;
+        }
+
+        .nav-header {
+            background-color: #00FF00;
+            color: #000;
+            padding: 0.2em 0.5em;
+            display: flex;
+            gap: 1em;
+            font-size: 0.8em;
+            align-items: center;
+        }
+
+        .nav-header a { text-decoration: none; color: #000; }
+        .nav-header a:hover { text-decoration: underline; }
+
+        /* MAIN CONTENT - Ora occupa lo spazio rimanente */
+        .main-content {
+            display: grid;
+            grid-template-columns: 35% 1fr; 
+            gap: 1em;
+            flex-grow: 1; /* Occupa tutto lo spazio disponibile tra header e footer */
+            overflow: hidden; /* Evita che la pagina intera scrolli */
+            min-height: 0; /* Fix per Firefox flexbox */
+        }
+
+        /* COLONNA SINISTRA (MENU) */
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Se il menu è troppo lungo, scrolla lui */
+        }
+
+        .menu-item {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            margin-bottom: 0.2em;
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-align: left;
+            padding: 0;
+            font-size: 1em;
+            font-family: inherit;
+            font-weight: bold;
+            width: 100%;
+        }
+        
+        .menu-item:hover { opacity: 0.8; }
+        
+        .menu-item span:first-child {
+            display: inline-block;
+            width: 2.5em;
+        }
+
+        .highlight-yellow {
+            background-color: #FFFF00;
+            color: #000;
+            display: inline-block;
+            width: 100%; 
+        }
+
+        .section-header-box {
+             background-color: #00FFFF;
+             color: #000;
+             display: inline-block;
+             width: 100%; 
+             margin-top: 0.5em;
+             margin-bottom: 0.2em;
+        }
+
+        /* COLONNA DESTRA (CONTENUTO) */
+        .col-right {
+            border-left: 2px solid #fff;
+            padding-left: 1em;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .dynamic-content {
+            flex-grow: 1;
+            padding-top: 0.5em;
+            white-space: pre-wrap; 
+            line-height: 1.3;
+            overflow-y: auto; /* SOLO IL TESTO SCROLLA */
+            padding-right: 0.5em; /* Spazio per la scrollbar */
+        }
+
+        /* FOOTER */
+        .footer-blue {
+            background-color: #0000FF;
+            padding: 0.5em;
+            margin-top: 1em;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        .footer-wrapper {
+            margin-top: auto; /* Spinge il footer in fondo al flex container */
+            flex-shrink: 0;
+        }
+
+        .footer-yellow {
+            background-color: #FFFF00;
+            color: #000;
+            text-align: center;
+            font-size: 0.8em;
+            padding: 0.2em;
+        }
+
+        /* Custom Scrollbar stile retrò */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #000; border-left: 1px solid #333; }
+        ::-webkit-scrollbar-thumb { background: #00FF00; }
+        ::-webkit-scrollbar-thumb:hover { background: #00AA00; }
     </style>
 </head>
-<body>
+<body onload="loadContent('profile')">
 
-    <div class="teletext-container">
-        <header class="header">
-            <div class="header-left">
-                <span id="page-number-header">PAG 100</span>
-            </div>
-            <div class="header-center">www.miosito.it</div>
-            <div class="header-right">
-                <span id="clock"></span>
-                <input type="text" class="page-input" id="page-input-field" maxlength="3" value="100">
-                <span class="go-btn">VAI</span>
-            </div>
-        </header>
+<script>
+    // CONTENUTO INVARIATO
+    const cvContent = {
+        'profile': `
+<span class="yellow">PROFILO PROFESSIONALE</span>
 
-        <div class="content">
-            <div class="main-title-container">
-                <h1 class="title">BENVENUTO</h1>
-            </div>
-            <div class="index-grid">
-                <div class="col-left">
-                    <div class="nav-item" onclick="updateContentPanel('101', this)"><span class="nav-number">101</span><span class="nav-text yellow">HOME</span></div>
-                    <div class="nav-item" onclick="updateContentPanel('102', this)"><span class="nav-number">102</span><span class="nav-text yellow">CHI SIAMO</span></div>
-                    <div class="nav-item" onclick="updateContentPanel('103', this)"><span class="nav-number">103</span><span class="nav-text cyan">LE MIE ESPERIENZE</span></div>
-                    <div class="nav-item" onclick="updateContentPanel('104', this)"><span class="nav-number">104</span><span class="nav-text green">LE MIE SKILLS</span></div>
-                    <div class="nav-item" onclick="updateContentPanel('105', this)"><span class="nav-number">105</span><span class="nav-text green">LINKEDIN</span></div>
-                    <div class="nav-item" onclick="updateContentPanel('106', this)"><span class="nav-number">106</span><span class="nav-text">ALTRO</span></div>
+<span class="white">Nome:</span>................ MARIO ROSSI (35)
+<span class="white">Ruolo:</span>............... TECNICO IT SENIOR
+<span class="white">Esperienza:</span>........... 10+ ANNI
+<span class="white">Specializzazione:</span>...... LINUX / AUTOMAZIONE
+
+<span class="cyan">FOCUS:</span>
+<span class="white">Sistemi Linux</span>, <span class="red">Cybersecurity</span>.
+Problem solving, team working.
+Obiettivo: Migliorare l'efficienza IT.
+        `,
+        'experience': `
+<span class="yellow">ESPERIENZA LAVORATIVA</span>
+
+<span class="green">2018 - Oggi:</span> SysAdmin Senior, TechCorp
+> Gestione 50+ server virtuali (VMware/KVM).
+> Responsabile <span class="white">Disaster Recovery</span>.
+
+<span class="green">2015 - 2018:</span> Helpdesk Specialist, GlobalNet
+> Supporto remoto (Livello 2).
+> <span class="cyan">Troubleshooting Windows</span>.
+        `,
+        'project': `
+<span class="yellow">ULTIMO PROGETTO: AUTOMAZIONE VERDE</span>
+
+<span class="cyan">Nome:</span>............... Automazione Verde
+<span class="cyan">Obiettivo:</span>............ Riduzione deploy cloud (40%)
+<span class="cyan">Strumenti:</span>............ Python, Ansible, Jenkins
+<span class="cyan">Piattaforma:</span>.......... AWS EC2/S3
+<span class="cyan">Output:</span>............... Documentazione <span class="white">Jira</span>.
+        `,
+        'certifications': `
+<span class="yellow">CERTIFICAZIONI RILEVANTI</span>
+
+<span class="cyan">2023:</span> Azure AZ-900 (Fundamentals)
+<span class="cyan">2022:</span> LPI-1 (Linux Professional Institute)
+<span class="cyan">2020:</span> Cisco CCNA (Network Associate)
+<span class="cyan">2018:</span> ITIL Foundation V4
+
+<span class="white">Skills Aggiuntive:</span>
+> Virtualizzazione VMware vSphere
+> Metodologia Agile/Scrum
+        `,
+        'education': `
+<span class="yellow">ISTRUZIONE E FORMAZIONE</span>
+
+<span class="green">2010:</span> Diploma Perito Informatico
+> I.T.I.S. Galileo Galilei (98/100)
+
+<span class="green">2012:</span> Corso Specialistico Reti/Sicurezza
+> Accademia Tech (300 ore)
+
+<span class="white">Aggiornamento:</span>
+Webinar <span class="cyan">Cybersecurity</span>
+e <span class="cyan">DevOps Tools</span>.
+        `,
+        'systems': `
+<span class="yellow">SISTEMI OPERATIVI / RETI</span>
+
+<span class="cyan">SISTEMI:</span>
+> Linux: Debian, Ubuntu, RHEL (Expert)
+> Windows: Server, Active Directory
+<span class="cyan">NETWORKING:</span>
+> TCP/IP, VLAN, VPN
+> Configurazione router/switch <span class="white">(Cisco/Mikrotik)</span>
+> Firewall (pfSense/iptables).
+        `,
+        'devops': `
+<span class="yellow">CLOUD / AUTOMAZIONE / DB</span>
+
+<span class="cyan">CLOUD:</span>............... AWS (EC2, S3, IAM) / Azure (Base)
+<span class="cyan">CODICE:</span>............... Python (Scripting), Bash/Shell
+<span class="cyan">AUTOMAZIONE:</span>.......... Ansible, Docker, Jenkins (Base)
+<span class="cyan">DATABASE:</span>.............. MySQL, MongoDB.
+        `,
+        'softskills': `
+<span class="yellow">SOFT SKILLS E LINGUE</span>
+
+<span class="cyan">SOFT SKILLS:</span>
+> Problem Solving
+> Affidabilità e Proattività
+> Team Working
+> Gestione del Cliente
+
+<span class="cyan">LINGUE:</span>
+<span class="white">Italiano:</span>.............. Madrelingua
+<span class="white">Inglese:</span>............... B2 (Buono, tecnico)
+<span class="white">Spagnolo:</span>.............. A2 (Scolastico)
+        `
+    };
+
+    function loadContent(contentId) {
+        const dynamicDiv = document.getElementById('dynamic-content');
+        if (dynamicDiv && cvContent[contentId]) {
+            dynamicDiv.innerHTML = cvContent[contentId];
+        }
+    }
+</script>
+
+    <div class="screen">
+        <div class="top-bar">
+            <span class="green">CV.01</span>
+            <span class="white">mario.rossi@email.it</span>
+        </div>
+
+        <div class="header">
+            <div class="cv-logo">Rai</div>
+            <div class="header-content">
+                <div class="title-logo">TELECURRICULUM</div>
+                <div class="nav-header">
+                    <a href="#" target="_blank">501 LINKEDIN</a>
+                    <a href="#" target="_blank">567 GITHUB REPO</a>
                 </div>
-                <div class="col-right">
-                    <div id="content-panel">
-                       <!-- Il contenuto delle pagine verrà inserito qui dinamicamente -->
+                <div class="nav-header bg-green">
+                    <a href="#" target="_blank">760 PORTFOLIO ONLINE</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="col-left">
+                <button onclick="loadContent('profile')" class="menu-item">
+                    <div class="highlight-yellow">
+                        <span>101</span> PROFILO PROF.LE
                     </div>
+                </button>
+                <button onclick="loadContent('experience')" class="menu-item white">
+                    <span>102</span> ESPERIENZA LAVORATIVA
+                </button>
+                <button onclick="loadContent('project')" class="menu-item">
+                    <div class="highlight-yellow">
+                        <span>103</span> ULTIMO PROGETTO
+                    </div>
+                </button>
+                <button onclick="loadContent('certifications')" class="menu-item white">
+                    <span>200</span> CERTIFICAZIONI
+                </button>
+                <button onclick="loadContent('education')" class="menu-item white">
+                    <span>300</span> ISTRUZIONE
+                </button>
+
+                <div class="section-header-box">
+                    <span>400</span> COMPETENZE TECNICHE
+                </div>
+                
+                <button onclick="loadContent('systems')" class="menu-item cyan">
+                    <span>401</span> SISTEMI & RETI
+                </button>
+                <button onclick="loadContent('devops')" class="menu-item cyan">
+                    <span>402</span> CLOUD & AUTOMAZIONE
+                </button>
+                <button onclick="loadContent('softskills')" class="menu-item cyan">
+                    <span>403</span> SOFT SKILLS & LINGUE
+                </button>
+            </div>
+
+            <div class="col-right">
+                <div id="dynamic-content" class="dynamic-content">
+                    </div>
+                
+                <div class="footer-blue">
+                    <a href="#" class="menu-item white">
+                        <span class="cyan">785</span> Stampa CV
+                    </a>
+                    <a href="mailto:mario.rossi@email.it" class="menu-item white">
+                        <span class="cyan">799</span> Contatto Rapido
+                    </a>
                 </div>
             </div>
         </div>
 
-        <footer class="footer">
-            <span style="cursor: pointer;" onclick="updateContentPanel('100', null)">Torna all'Indice</span>
-        </footer>
-    </div>
-
-    <!-- Page contents (hidden) -->
-    <div id="page-contents" style="display: none;">
-        <div id="content-101">
-            <h2 class="page-title">HOME</h2>
-            <div class="page-content">
-                <p><b>home</b></p>
-                <p>............</p>
+        <div class="footer-wrapper">
+            <div class="footer-yellow">
+                AUTORIZZO TRATTAMENTO DATI PERSONALI (GDPR UE 2016/679)
             </div>
-        </div>
-        <div id="content-102">
-            <h2 class="page-title">CHI SONO</h2>
-            <div class="page-content">
-                <p><b>nome</b></p>
-                <p>............</p>
-            </div>
-        </div>
-        <div id="content-103">
-            <h2 class="page-title">LE MIE ESPERIENZE</h2>
-            <div class="page-content">
-                <p> <span class="sub">103.01</span> • Esperienza</p>
-                <p> <span class="sub">103.02</span> • Esperienza</p>
-                <p> <span class="sub">103.03</span> • Esperienza</p>
-                <p> <span class="sub">103.04</span> • Esperienza</p>
-            </div>
-        </div>
-        <div id="content-104">
-            <h2 class="page-title">LE MIE SKILLS</h2>
-            <div class="page-content">
-                <p> <span class="sub">104.01</span> • Esperienza</p>
-                <p> <span class="sub">104.02</span> • Esperienza</p>
-                <p> <span class="sub">104.03</span> • Esperienza</p>
-                <p> <span class="sub">104.04</span> • Esperienza</p>
-                <p> <span class="sub">104.05</span> • Esperienza</p>
-            </div>
-        </div>
-        <div id="content-105">
-            <h2 class="page-title">LINKEDIN</h2>
-            <div class="page-content">
-                <p>Le mie coordinate professionali nel mondo digitale.</p>
-                <p><b>Profilo:</b> <a href="#" target="_blank" style="color: var(--text-blue);">Il mio profilo LinkedIn</a></p>
-            </div>
-        </div>
-        <div id="content-106">
-            <h2 class="page-title">ALTRO</h2>
-            <div class="page-content">
-                <p></p>
-                <p>- ...</p>
+            <div class="green" style="background-color: #000; width: 100%; text-align: center; font-size: 0.9em;">
+                Disponibile per colloqui immediati (Cell. 333 1234567)
             </div>
         </div>
     </div>
 
-
-    <script>
-        const pageNumberEl = document.getElementById('page-number-header');
-        const clockEl = document.getElementById('clock');
-        const pageInput = document.getElementById('page-input-field');
-        const goBtn = document.querySelector('.go-btn');
-        const contentPanel = document.getElementById('content-panel');
-
-        function updateContentPanel(pageId, element) {
-            // Manage active state for highlighting
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if (element) {
-                element.classList.add('active');
-            }
-
-            // Clear the panel if returning to index (page 100)
-            if (pageId === '100') {
-                contentPanel.innerHTML = '';
-                 // Clear the title and reset page number
-                document.querySelector('.title').textContent = 'BENVENUTO';
-                pageNumberEl.textContent = `PAG 100`;
-                pageInput.value = '100';
-                return;
-            }
-            
-            // Find the content and insert it into the panel
-            const contentSource = document.getElementById(`content-${pageId}`);
-            if (contentSource) {
-                contentPanel.innerHTML = contentSource.innerHTML;
-                // Update the main title based on the page title in the content
-                const pageTitle = contentSource.querySelector('.page-title');
-                if(pageTitle) {
-                    document.querySelector('.title').textContent = pageTitle.textContent;
-                }
-            } else {
-                contentPanel.innerHTML = '<p style="color: var(--bg-color);">Contenuto non disponibile.</p>';
-                document.querySelector('.title').textContent = 'ERRORE';
-            }
-
-            // Update the page number in the header
-            pageNumberEl.textContent = `PAG ${pageId}`;
-            pageInput.value = pageId;
-        }
-
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            clockEl.textContent = `${hours}:${minutes}:${seconds}`;
-        }
-        
-        // Handle input to change page
-        goBtn.addEventListener('click', () => {
-             const navItem = [...document.querySelectorAll('.nav-item')].find(item => item.getAttribute('onclick').includes(`'${pageInput.value}'`));
-             updateContentPanel(pageInput.value, navItem || null);
-        });
-
-        pageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                // Find the corresponding menu item to highlight it
-                const navItem = [...document.querySelectorAll('.nav-item')].find(item => item.getAttribute('onclick').includes(`'${pageInput.value}'`));
-                updateContentPanel(pageInput.value, navItem || null);
-            }
-        });
-
-        setInterval(updateClock, 1000);
-        updateClock();
-        
-        // Initial state
-        document.addEventListener('DOMContentLoaded', () => {
-            const initialElement = document.querySelector(".nav-item[onclick*='101']");
-            updateContentPanel('101', initialElement);
-        });    
-    </script>
 </body>
 </html>
